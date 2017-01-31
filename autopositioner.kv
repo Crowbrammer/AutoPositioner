@@ -1,34 +1,33 @@
 # File name: autopositioner.py
-
-#<MachineWidget>:
-	
-	#canvas:
-		#Rectangle: 
-			#size: root.width * 0.9, root.height * 0.3
-			#pos: root.width * 0.05, root.height 
-	
-	
-<GridLayout>:
-		
-	Label:
-		text: "Test"
-	Label:
-		text: "Test"
-	Label:
-		text: "Test"
-	Label:
-		text: "Test"
-	Label:
-		text: "Test"
-		
+#: import ListAdapter kivy.adapters.listadapter.ListAdapter
+#: import ListItemButton kivy.uix.listview.ListItemButton
 
 
+AutoPositionerRoot:
 
+<ComboMeal>:
+	orientation: 'vertical'
 	
+	BoxLayout: #SuperLayout1
+		height: '90dp'
+		size_hint_y: None
+		padding: 10, 10
+		BoxLayout:
+			orientation: 'vertical'
+			Button: 
+			Button:
+			Button:
+		BoxLayout:
+			orientation: 'vertical'
+			Button:
+				id: machine_button
+				text: root.machine_name
+			Button:
 	
-		
-	
-#How do I* get the button
-	
-#How do I* get another button placed underneath it the same way this button is placed underneath the top of the screen
-#DONE
+<AutoPositionerRoot>:
+	orientation: 'vertical'
+	ComboMeal
+	ComboMeal
+	ComboMeal
+	ComboMeal
+	ComboMeal

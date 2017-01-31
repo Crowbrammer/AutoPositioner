@@ -1,19 +1,24 @@
 from kivy.app import App
-from kivy.uix.gridlayout import GridLayout
-from kivy.uix.label import Label
-from kivy.uix.widget import Widget
+from kivy.uix.boxlayout import BoxLayout
+from kivy.properties import ObjectProperty, StringProperty
+from kivy.uix.listview import ListItemButton
+from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition
 
-class MachineWidget(Widget):
-    def __init__(self, **kwargs):
-        super(MachineWidget, self).__init__(**kwargs)
+class AutoPositionerRoot(BoxLayout):
+	pass
 
-class ContainerBox(GridLayout):
-    def __init__(self, **kwargs):
-        super(ContainerBox, self).__init__(**kwargs)
+class ComboMeal(BoxLayout):
+	machine_name = StringProperty()
+	def __init__(self, **kwargs):
+		super(ComboMeal, self).__init__(**kwargs)
+		self.machine_name = 'Hello'
 
-class autopositioner(App):
+class MyListItemButton(ListItemButton):
+	pass	
+	
+class AutopositionerApp(App):
 	def build(self):
-		return MachineWidget()
+		AutoPositionerRoot()
 		
-if __name__ == "__main__":
-	autopositioner().run()
+if __name__ == '__main__':
+	AutopositionerApp().run()
