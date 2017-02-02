@@ -1,33 +1,60 @@
 # File name: autopositioner.py
-#: import ListAdapter kivy.adapters.listadapter.ListAdapter
-#: import ListItemButton kivy.uix.listview.ListItemButton
+# #: import ListAdapter kivy.adapters.listadapter.ListAdapter
+# #: import ListItemButton kivy.uix.listview.ListItemButton
 
 
 AutoPositionerRoot:
 
-<ComboMeal>:
+<TestModule@BoxLayout>:				
+
+<MmpModule>:
+
 	orientation: 'vertical'
+	id: mmpm1
 	
-	BoxLayout: #SuperLayout1
+	BoxLayout: # This should probably be in Root
+	
+		id: bl_super
+	
 		height: '90dp'
 		size_hint_y: None
 		padding: 10, 10
+		
 		BoxLayout:
+			
+			id: bl1
+		
 			orientation: 'vertical'
 			Button: 
+			
+				id: position1
+				
 			Button:
+			
+				id: position2
+			
 			Button:
+			
+				id: position3
+			
 		BoxLayout:
+		
+			id: bl2
+		
 			orientation: 'vertical'
+			
 			Button:
-				id: machine_button
-				text: root.machine_name
+			
+				id: machine_name
+				
 			Button:
+			
+				id: model_button
 	
 <AutoPositionerRoot>:
+
 	orientation: 'vertical'
-	ComboMeal
-	ComboMeal
-	ComboMeal
-	ComboMeal
-	ComboMeal
+	
+	Image:
+	
+		source: 'data/cat.jpg'

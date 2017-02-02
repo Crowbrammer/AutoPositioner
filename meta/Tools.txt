@@ -1,0 +1,10 @@
+Useful Tools
+
+Change the background color:
+
+canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size

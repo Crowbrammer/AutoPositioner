@@ -1,0 +1,26 @@
+For each challenge, cycle through this:
+
+<Challenge> # Specific from the KL
+	What's been great about this problem?
+	What's wasn't perfect yet?
+	What have I* done to make things the way I* want it? 
+	What have I* stopped doing to make things the way I* want it?
+	How have I* enjoyed the process while I* did what's necessary to make things the way I* want it? 
+	
+	CSQ
+	
+	
+# Haha I like to write in Kivy Lang a lot 	
+	
+<Modulization>
+	Description: 'how to differentiate the different instances of MmpModule (i.e. how can I* index them, and reference each instantiation specifically--calling on them proceduarly... using data from the database/function to populate the values of the properties?)'
+	
+	
+Maybe convert buttons to ListItemButtons?
+How do I* access specific positions--creating a list of all the positions as a set of dictionaries--
+	
+Remove unneeded items
+Make it safe
+
+
+Improvements - SQLite3 should not require a tuple for a single dynamic value--auto-tupify
