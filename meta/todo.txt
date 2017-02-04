@@ -16,6 +16,8 @@ For each challenge, cycle through this:
 	Description: 'how to differentiate the different instances of MmpModule (i.e. how can I* index them, and reference each instantiation specifically--calling on them proceduarly... using data from the database/function to populate the values of the properties?)'
 	
 
+Always be asking: 'What's my momentum?'
+
 Rita
 Anthony
 Ceu

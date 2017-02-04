@@ -3,11 +3,18 @@ import inspect
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import ObjectProperty, StringProperty, Property
-#from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition
+from kivy.uix.screenmanager import ScreenManager, Screen#, FadeTransition
 
-class AutoPositionerRoot(BoxLayout):
+class ScreenManagement(ScreenManager):
+	pass
+
+class PositionerScreen(Screen):
+
+	pass
+	
+class PositionerLayout(BoxLayout):
 	def __init__(self, **kwargs):
-		super(AutoPositionerRoot, self).__init__(**kwargs)
+		super(PositionerLayout, self).__init__(**kwargs)
 		# for i in all_active_machines:
 			# check if the machine's up 
 			# check the model_in_the_machine
@@ -20,6 +27,7 @@ class AutoPositionerRoot(BoxLayout):
 			# list_view_thing = ready_to_be_updated
 					
 		machine_list = libs.apa_database.get_data('machineID_modelID_status', order_by_column='machineID')
+		global position_chart
 		position_chart = libs.apa_database.assign_people_to_positions()
 		
 		mmpm = []
@@ -81,7 +89,7 @@ class AutoPositionerRoot(BoxLayout):
 		
 		pass
 		# For each position, get the # of rows where people are trained in this position
-			
+		
 class MmpModule(BoxLayout):
 
 	machine_name = StringProperty()
@@ -91,10 +99,44 @@ class MmpModule(BoxLayout):
 		super(MmpModule, self).__init__(**kwargs)
 		self.machine_name = 'I-34'
 		self.model_name = 'CSEG'
+
+class IsSheTrained(BoxLayout):
+
+	pass
+	
+class AddTeammatesLayout(BoxLayout):
+	
+	def __init__(self, **kwargs):
+
+		super(AddTeammatesLayout, self).__init__(**kwargs)
+		lsm = [] # Label-Switch Module
+		print(str(position_chart))
+		for i in range(0, len(position_chart)):
+			
+			lsm.append(IsSheTrained())
+			lsm[i].ids.position_label.text = 'Wow: {}'.format(position_chart[i][0][0])
+			self.add_widget(lsm[i])
+			
+			
+			# Needs to pick each item apart and analyze it for its model name. 
+			# Should move onto the item immediately if the item doesn't have the model
+			
+	def record_that_shit(self):
+	
+		teammate_name_entry = ObjectProperty()
+		teammate_name = self.ids.teammate_name.text
+		print('\n\nThe TextInput result: ' + teammate_name + '\n\n^ ^ : Trying to get the result of whether the TI*s text is registering\n\n')
+		
+		#for i in range(0, len(position_chart)):
+		
+class AddTeammatesScreen(Screen):
+
+	pass
+
 		
 class AutopositionerApp(App):
 	def build(self):
-		AutoPositionerRoot()
+		ScreenManagement()
 		
 		
 if __name__ == '__main__':

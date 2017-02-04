@@ -104,7 +104,7 @@ def get_data(table_name=None, specific_data=False, column_name=None, model=None,
 	
 	elif order_by_column is not None:
 		
-		c.execute('SELECT * FROM {tn} ORDER BY {ob} '.\
+		c.execute('SELECT * FROM {tn} ORDER BY {ob} DESC'.\
 			format(tn=table_name, ob=order_by_column))
 	
 	else:
@@ -301,10 +301,10 @@ def assign_people_to_positions():
 		
 		# Place this person on the position chart
 		
-		print('\n\nCurrent Position + Random Select: ' + str(current_position) + ' + ' +  str(random_select_from_untaken_current_position_pool) + '\n\n^ ^ : Trying to see what values are coming in for each.\n\n')
+		# print('\n\nCurrent Position + Random Select: ' + str(current_position) + ' + ' +  str(random_select_from_untaken_current_position_pool) + '\n\n^ ^ : Trying to see what values are coming in for each.\n\n')
 		
 		my_sexy_tuple = (current_position, random_select_from_untaken_current_position_pool)
-		#print(str(my_sexy_tuple))
+		# print(str(my_sexy_tuple))
 		position_chart.append(my_sexy_tuple)
 		taken.append(my_sexy_tuple[1])
 		untaken = current_position_pool
