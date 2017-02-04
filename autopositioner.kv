@@ -7,6 +7,7 @@ ScreenManagement:
 	#transition: FadeTransition()
 	PositionerScreen:
 	AddTeammatesScreen:
+	AddedTeammatesSuccessfullyScreen:
 
 <MmpModule>:
 
@@ -113,3 +114,20 @@ ScreenManagement:
 	Image:
 	
 		source: 'data/cat.jpg'
+		
+		
+<AddedTeammatesSuccessfullyScreen>:
+	
+	name: 'Victory'
+
+	AddedTeammatesSuccessfullyLayout
+
+<AddedTeammatesSuccessfullyLayout>:
+
+	Label:
+		id: display_label
+		text: root.victory_text
+	Button:
+		on_release: app.root.current = 'PositionerScreen'
+		text: 'Position Em!'
+		font_size: '30dp'
