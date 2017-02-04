@@ -15,12 +15,48 @@ For each challenge, cycle through this:
 <Modulization>
 	Description: 'how to differentiate the different instances of MmpModule (i.e. how can I* index them, and reference each instantiation specifically--calling on them proceduarly... using data from the database/function to populate the values of the properties?)'
 	
+
+Rita
+Anthony
+Ceu
+Ngun
+Biak
+Louis
+James
+Shane
+Tom
+Carlton
+Sandy
+Cathy
+Jalil
+Cymba
+Lyndia
+Amanda
+
+Need specific types of restrictions
+Need to update teammates list based on availability and restriction
+cpython not being able to actually run threads at the same time, especially with a gui like qt that's designed around signals/slots which are thread safe
+
+	
+	
+	
+
+create a set of all teammates
+Order the positions from least training to most training using a for loop
+For each position, in this order:
+	create a set of all people with required training, removing them from the global list
+	Randomly pick a person for the position--put the rest back in the global list
+
+	
 	
 Maybe convert buttons to ListItemButtons?
 How do I* access specific positions--creating a list of all the positions as a set of dictionaries--
 	
 Remove unneeded items
 Make it safe
+Gist should automatically allow pulls to a GitHub directory
 
 
 Improvements - SQLite3 should not require a tuple for a single dynamic value--auto-tupify
+
+"Worst problems in the company"
