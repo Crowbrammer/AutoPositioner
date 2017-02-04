@@ -332,6 +332,8 @@ def assign_people_to_positions():
 	return position_chart
 		
 	# How I learned to return from functions properly: http://bit.ly/1yn6OfQ
+
+	
 	
 create_table('machineID_modelID_status', 'modelID_positionnum', 'teammate_modelID_positionnum')
 

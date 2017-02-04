@@ -109,6 +109,8 @@ class AddTeammatesLayout(BoxLayout):
 	def __init__(self, **kwargs):
 
 		super(AddTeammatesLayout, self).__init__(**kwargs)
+		
+		global lsm		
 		lsm = [] # Label-Switch Module
 		print(str(position_chart))
 		for i in range(0, len(position_chart)):
@@ -123,9 +125,20 @@ class AddTeammatesLayout(BoxLayout):
 			
 	def record_that_shit(self):
 	
-		teammate_name_entry = ObjectProperty()
 		teammate_name = self.ids.teammate_name.text
 		print('\n\nThe TextInput result: ' + teammate_name + '\n\n^ ^ : Trying to get the result of whether the TI*s text is registering\n\n')
+		
+		for each in range(0, len(lsm)):
+
+			if lsm[each].ids.position_training_switch.active:
+				
+				#print('\n\nfor each positionNum: ' + str(position_chart[each][0][1]) + '\n\n^ ^ : Trying to see what position_chart[each][1][0] is bringing me.\n\n')
+				
+				#Add an entry to teammate_modelID_positionnum
+				
+				libs.apa_database.insert_data(tb='teammate_modelID_positionnum', col1='teammate', data1=teammate_name, col2='modelID', data2=position_chart[each][0][0], col3='positionNum', data3=position_chart[each][0][1], col4='available', 	data4='Yes', col5='restricted', data5='No')
+				
+				# Do db shit
 		
 		#for i in range(0, len(position_chart)):
 		
