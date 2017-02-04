@@ -206,35 +206,122 @@ def get_number_of_people_trained_on_each_position():
 	
 	c.execute('SELECT * FROM teammate_modelID_positionnum')
 	
+	global available_people
 	available_people = list(set([x[0] for x in c.fetchall() if x[3] != 'No']))
+	global number_trained_in_position
+	number_trained_in_position = []
+	
 	
 	# Where I learned to use list comprehensions properly (i.e. list only things of a certain value, that the first part is what's usually below it.): http://bit.ly/2l368uq
 	# Where I learned to create sets from list comprehensions: http://bit.ly/2l3cmdE
 	
-	print('The people currently available are: ' + str(available_people))
+	# print('The people currently available are: ' + str(available_people))
+	# print(positions)
 	
 	for each in positions:
 		
-		print('The current positions handled are: ' + str(each))
+		# print('The current positions handled are: ' + str(each))
 		
 		for each in each:
 		
-			print('The single current position handled is: ' + str(each))
+			# print('The single current position handled is: ' + str(each))
 			
-			c.execute('SELECT * FROM teammate_modelID_positionnum WHERE modelID=? AND positionNum=?', (each[0], each[1]) )
-			
-			for each in c.fetchall():
-			
-				print(each)
+			c.execute('SELECT * FROM teammate_modelID_positionnum WHERE modelID=? AND positionNum=? AND available="Yes"', (each[0], each[1]) )
+			number_trained_in_position.append((each, len(c.fetchall())))
 			
 			
+			# for each in c.fetchall():
+				
+				# print(each)
+
+	from operator import itemgetter
+	number_trained_in_position = sorted(number_trained_in_position, key=itemgetter(1))
+	print(number_trained_in_position)
+	
+	# Where I learned to sort lists: http://bit.ly/2l3hBKz
+	
+	return number_trained_in_position		
 			
 	close_connection()
+	
+def assign_people_to_positions():
+
+	import random
+	
+	# Untaken pool
+
+	untaken = available_people
+	taken = []
+	current_position_pool = []
+	position_chart = []
+	
+	
+	positions_to_post_on_screen = [] # Should be a list of tuples, (name, position)
+	positions_of_all_current_models = [each[0] for each in number_trained_in_position]
+	print('The positions are: ' + str(positions_of_all_current_models))
+	
+	for each in positions_of_all_current_models:
+	
+		# Untaken people trained in current position pool
+		
+		c.execute('SELECT teammate FROM teammate_modelID_positionnum WHERE modelID=? AND positionNum=?', (each[0], each[1]))
+		
+		current_position_pool = []
+		
+		current_position = each
+		
+		print('The pre-for current_position_pool is: ' + str(current_position_pool))
+		print('The position_chart is: ' + str(position_chart))
+		
+		''' Create a non-tupled list of people for the pool'''
+		
+		for each in c.fetchall():
+			
+			#print(each[0] + ' is trained on ' + str(current_position[0]) + str(current_position[1]))
+			current_position_pool.append(each[0])
+		
+		print('CPP: ' + str(current_position_pool))
+		print('Taken: ' + str(taken))
+		
+		print('LC: ' + str([x for x in current_position_pool if x not in taken]))
+		
+		for each in current_position_pool:
+		
+			if each[0] in taken:
+			
+				current_position_pool.remove(each[0])
+			
+			print(str(current_position_pool))
+		
+		# Randomly select one person from the untaken pool
+		
+		random_select_from_untaken_current_position_pool = random.choice(current_position_pool)
+		print('My random belongs to...: ' + random_select_from_untaken_current_position_pool + '!')	
+		
+		# Where I learned to pick a random item from a list: http://bit.ly/2l7pgUQ
+		
+		# Place this person on the position chart
+		
+		my_sexy_tuple = (current_position, random_select_from_untaken_current_position_pool)
+		print(str(my_sexy_tuple))
+		position_chart.append(my_sexy_tuple)
+		taken.append(my_sexy_tuple[1])
+		
+		
+		# Delete Untaken people trained in current position pool
+		# Remove the person positioned from the untaken pool 
+		# Repeat until there are no more positions left
+		# Keep "the untaken" (haha, good movie title) in its own list
+		# Choose randomly from every untaken person available and trained in it
+		# Remove this person from the untaken pool
+		
+		
 	
 create_table('machineID_modelID_status', 'modelID_positionnum', 'teammate_modelID_positionnum')
 
 list_positions()
 get_number_of_people_trained_on_each_position()
+assign_people_to_positions()
 
 # Python's guide that will probably help me learn fetchone and executemany: http://bit.ly/2kvtKXY
 # Best SQLite3 guide to-date: http://bit.ly/2l2jsv4
