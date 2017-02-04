@@ -3,9 +3,10 @@
 # #: import ListItemButton kivy.uix.listview.ListItemButton
 
 
-AutoPositionerRoot:
-
-<TestModule@BoxLayout>:				
+ScreenManagement:
+	#transition: FadeTransition()
+	PositionerScreen:
+	AddTeammatesScreen:
 
 <MmpModule>:
 
@@ -22,10 +23,6 @@ AutoPositionerRoot:
 		padding: 10, 10
 		
 		BoxLayout:
-			
-			pos1: position1
-			pos2: position2
-			pos3: position3
 			
 			orientation: 'vertical'
 			Button: 
@@ -54,9 +51,64 @@ AutoPositionerRoot:
 			
 				id: model_button
 	
-<AutoPositionerRoot>:
+<PositionerLayout>:
 
 	orientation: 'vertical'
+	
+	Button: 
+		
+		on_release: app.root.current = 'AddTeammatesScreen'
+		text: 'Add Teammates!'
+		font_size: '30dp'
+	
+	Image:
+	
+		source: 'data/cat.jpg'
+
+<PositionerScreen>:
+	
+	name: 'PositionerScreen'
+	
+	PositionerLayout
+		
+<AddTeammatesScreen>:
+
+	name: 'AddTeammatesScreen'
+	
+	AddTeammatesLayout
+	
+<IsSheTrained>:
+
+	
+	
+	Label:
+	
+		id: position_label
+		text: '[Position Name]'
+		
+	Switch: 
+	
+		id: position_training_switch
+		
+<AddTeammatesLayout>:
+	
+	orientation: 'vertical'
+
+	TextInput:
+		
+		id: teammate_name
+		
+	Button: 
+		
+		on_release: app.root.current = 'PositionerScreen'
+		text: 'Position Em!'
+		font_size: '30dp'
+		
+	Button: 
+		
+		on_release: root.record_that_shit()
+		text: 'Position Em!'
+		font_size: '30dp'
 	
 	Image:
 	
