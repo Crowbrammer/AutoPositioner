@@ -246,11 +246,12 @@ def get_number_of_people_trained_on_each_position():
 	
 def assign_people_to_positions():
 
+	''' Every time I* do a print, do a \n\n + the thing + \n\n + a few lines of what I was trying to do, followed by another \n\n'''
+
 	import random
 	
 	# Untaken pool
 
-	untaken = available_people
 	taken = []
 	current_position_pool = []
 	position_chart = []
@@ -258,7 +259,7 @@ def assign_people_to_positions():
 	
 	positions_to_post_on_screen = [] # Should be a list of tuples, (name, position)
 	positions_of_all_current_models = [each[0] for each in number_trained_in_position]
-	print('The positions are: ' + str(positions_of_all_current_models))
+	print('\n\nThe positions are: ' + str(positions_of_all_current_models) + '\n\n^ ^ : Trying to see what the list of positions I*m working with are like\n\n')
 	
 	for each in positions_of_all_current_models:
 	
@@ -266,56 +267,71 @@ def assign_people_to_positions():
 		
 		c.execute('SELECT teammate FROM teammate_modelID_positionnum WHERE modelID=? AND positionNum=?', (each[0], each[1]))
 		
-		current_position_pool = []
+		
 		
 		current_position = each
 		
-		print('The pre-for current_position_pool is: ' + str(current_position_pool))
-		print('The position_chart is: ' + str(position_chart))
+		#print('\n\nThe pre-for current_position_pool is: ' + str(current_position_pool) + '\n\n^ ^ : Trying to see the effect the upcoming for loop has on my current_position_pool\n\n')
+		#print('\n\nThe position_chart is: ' + str(position_chart) + '\n\n^ ^ : Trying to see how the position_chart updates with each consecutive loop\n\n')
 		
 		''' Create a non-tupled list of people for the pool'''
+		
+		current_position_pool = []
 		
 		for each in c.fetchall():
 			
 			#print(each[0] + ' is trained on ' + str(current_position[0]) + str(current_position[1]))
 			current_position_pool.append(each[0])
 		
-		print('CPP: ' + str(current_position_pool))
-		print('Taken: ' + str(taken))
+		current_position_pool = [x for x in current_position_pool if x not in taken]
 		
-		print('LC: ' + str([x for x in current_position_pool if x not in taken]))
+		#print('\n\nCPP: ' + str(current_position_pool) + '\n\n^ ^ : Trying to see how the current_position_pool looks after the for-loop detuplified it.\n\n')
 		
-		for each in current_position_pool:
+		#print('\n\nTaken: ' + str(taken) + '\n\n^ ^ : Trying to see how the taken list updates over time, and with what type of data.')
 		
-			if each[0] in taken:
-			
-				current_position_pool.remove(each[0])
-			
-			print(str(current_position_pool))
+		#print('\n\nLC: ' + str([x for x in current_position_pool if x not in taken]) + '\n\n^ ^ : See the effect of the list comprehension I* was trying to work with\n\n')
 		
 		# Randomly select one person from the untaken pool
 		
 		random_select_from_untaken_current_position_pool = random.choice(current_position_pool)
-		print('My random belongs to...: ' + random_select_from_untaken_current_position_pool + '!')	
+		
+		#print('\n\nMy random belongs to...: ' + random_select_from_untaken_current_position_pool + '!\n\n^ ^ : See if my random choice worked well\n\n')	
 		
 		# Where I learned to pick a random item from a list: http://bit.ly/2l7pgUQ
 		
 		# Place this person on the position chart
 		
+		print('\n\nCurrent Position + Random Select: ' + str(current_position) + ' + ' +  str(random_select_from_untaken_current_position_pool) + '\n\n^ ^ : Trying to see what values are coming in for each.\n\n')
+		
 		my_sexy_tuple = (current_position, random_select_from_untaken_current_position_pool)
-		print(str(my_sexy_tuple))
+		#print(str(my_sexy_tuple))
 		position_chart.append(my_sexy_tuple)
 		taken.append(my_sexy_tuple[1])
+		untaken = current_position_pool
 		
+	#print('\n\nThe position chart so far: ' + str(position_chart) + '\n\n^ ^ : Trying to see I* want to return to my main code.\n\n')
+	
+	# Delete Untaken people trained in current position pool
+	
+	'''Done with a list compo'''
+	
+	# Remove the person positioned from the untaken pool 
+	
+	'''Done with a list compo'''
+	
+	# Repeat until there are no more positions left
+	
+	'''Done with the original for loop'''
+	
+	# Keep "the untaken" (haha, good movie title) in its own list
+	
+	
+	# Choose randomly from every untaken person available and trained in it
+	# Remove this person from the untaken pool
 		
-		# Delete Untaken people trained in current position pool
-		# Remove the person positioned from the untaken pool 
-		# Repeat until there are no more positions left
-		# Keep "the untaken" (haha, good movie title) in its own list
-		# Choose randomly from every untaken person available and trained in it
-		# Remove this person from the untaken pool
+	return position_chart
 		
-		
+	# How I learned to return from functions properly: http://bit.ly/1yn6OfQ
 	
 create_table('machineID_modelID_status', 'modelID_positionnum', 'teammate_modelID_positionnum')
 
