@@ -8,3 +8,8 @@ canvas.before:
         Rectangle:
             pos: self.pos
             size: self.size
+            
+            
+Widget def:
+
+altendky: A widget appears to be the class epicenter for creating event-driven, collision-checking, concerns separating code. It's a basic thing to use when creating visuals with code that I want to work with Kivy--which will then translate it for whatever platform its running on (Android, iOS, Windows, Linux). That said, a Layout is a Widget. But a Widget isn't usually a Layout. If you'll look at the Kivy code, you'll see the MmpModule containing everything as I would if it were just a BoxLayout. The reason I have it as its own class in Python, is so I can call the widgets within in that exact same order. Updated Gist: https://gist.github.com/Crowbrammer/e3fc7fc39b440ba70f9515c4c321eac2
