@@ -1,3 +1,8 @@
+# AutoPositionerApp for Kyle Woodsworth
+# Name: Aaron Bell
+# Collaborators: None
+# Time Spent: 6:00
+
 print("Hi, I'm apa_database.py!!")
 
 import sqlite3

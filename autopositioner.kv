@@ -1,3 +1,8 @@
+# AutoPositionerApp for Kyle Woodsworth
+# Name: Aaron Bell
+# Collaborators: None
+# Time Spent: 3:00
+
 # File name: autopositioner.py
 # #: import ListAdapter kivy.adapters.listadapter.ListAdapter
 # #: import ListItemButton kivy.uix.listview.ListItemButton
@@ -8,7 +13,33 @@ ScreenManagement:
 	PositionerScreen:
 	AddTeammatesScreen:
 	AddedTeammatesSuccessfullyScreen:
+	
+# # # # # # # # # # # # # # # # # # # # 
 
+# Positioner Screen
+
+# # # # # # # # # # # # # # # # # # # # 	
+
+<PositionerScreen>:
+	
+	name: 'PositionerScreen'
+	
+	PositionerLayout
+
+<PositionerLayout>:
+
+	orientation: 'vertical'
+	
+	Button: 
+		
+		on_release: app.root.current = 'AddTeammatesScreen'
+		text: 'Add Teammates!'
+		font_size: '30dp'
+	
+	Image:
+	
+		source: 'data/cat.jpg'
+	
 <MmpModule>:
 
 	size_hint: 1,1
@@ -51,46 +82,24 @@ ScreenManagement:
 			Button:
 			
 				id: model_button
+				on_release: dropdown.open(self)
+				
+			
+			
 	
-<PositionerLayout>:
+# # # # # # # # # # # # # # # # # # # # 
 
-	orientation: 'vertical'
-	
-	Button: 
-		
-		on_release: app.root.current = 'AddTeammatesScreen'
-		text: 'Add Teammates!'
-		font_size: '30dp'
-	
-	Image:
-	
-		source: 'data/cat.jpg'
+# Add Teammates Screen
 
-<PositionerScreen>:
-	
-	name: 'PositionerScreen'
-	
-	PositionerLayout
+# # # # # # # # # # # # # # # # # # # # 
+
 		
 <AddTeammatesScreen>:
 
 	name: 'AddTeammatesScreen'
 	
 	AddTeammatesLayout
-	
-<IsSheTrained>:
 
-	
-	
-	Label:
-	
-		id: position_label
-		text: '[Position Name]'
-		
-	Switch: 
-	
-		id: position_training_switch
-		
 <AddTeammatesLayout>:
 	
 	orientation: 'vertical'
@@ -114,7 +123,23 @@ ScreenManagement:
 	Image:
 	
 		source: 'data/cat.jpg'
+	
+<IsSheTrained>:	
+	
+	Label:
+	
+		id: position_label
+		text: '[Position Name]'
 		
+	Switch: 
+	
+		id: position_training_switch
+		
+# # # # # # # # # # # # # # # # # # # # 
+
+# Added Teammates Successfully Screen
+
+# # # # # # # # # # # # # # # # # # # # 		
 		
 <AddedTeammatesSuccessfullyScreen>:
 	
@@ -123,10 +148,13 @@ ScreenManagement:
 	AddedTeammatesSuccessfullyLayout
 
 <AddedTeammatesSuccessfullyLayout>:
+	
+	id: added_teammate
 
 	Label:
 		id: display_label
 		text: root.victory_text
+		
 	Button:
 		on_release: app.root.current = 'PositionerScreen'
 		text: 'Position Em!'

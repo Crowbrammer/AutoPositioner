@@ -1,19 +1,41 @@
+# AutoPositionerApp for Kyle Woodsworth
+# Name: Aaron Bell
+# Collaborators: None
+# Time Spent: 35:00
+
 import libs.apa_database
 import inspect
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import ObjectProperty, StringProperty, Property
 from kivy.uix.screenmanager import ScreenManager, Screen#, FadeTransition
+from kivy.uix.dropdown import DropDown
+
+# # # # # # # # # # # # # # # # # # # # 
+
+# Screens
+
+# # # # # # # # # # # # # # # # # # # # 
 
 class ScreenManagement(ScreenManager):
+
 	pass
+	
+	
+# # # # # # # # # # # # # # # # # # # # 
+
+# Positioner Screen
+
+# # # # # # # # # # # # # # # # # # # # 
 
 class PositionerScreen(Screen):
 
 	pass
 	
 class PositionerLayout(BoxLayout):
+
 	def __init__(self, **kwargs):
+	
 		super(PositionerLayout, self).__init__(**kwargs)
 		# for i in all_active_machines:
 			# check if the machine's up 
@@ -44,18 +66,22 @@ class PositionerLayout(BoxLayout):
 			for each in position_chart:
 				
 				if each[0][0] == machine_list[i][1]:
+				
 					if each[0][1] == 3:
+					
 						mmpm[i].ids.position3.text = 'Wow: {}'.format(each[1])
+						
 					elif each[0][1] == 2:
+					
 						mmpm[i].ids.position2.text = 'Wow: {}'.format(each[1])
+						
 					else:
+					
 						mmpm[i].ids.position1.text = 'Wow: {}'.format(each[1])
 			
 			#print('\n\nThe LC result: ' + str([x for x in position_chart if (machine_list[i][1]	 in position_chart]) + '\n\n^ ^ : Trying to get the values with only the current model.\n\n')
-			#print()
 			
-			
-			
+			print('\n\nID Keys: ' + str(self.ids.keys()) + '\n\n^ ^ : Trying to get the values of ids.\n\n')
 			
 			mymodel = mmpm[i].ids.machine_button.text
 			self.add_widget(mmpm[i])
@@ -63,10 +89,6 @@ class PositionerLayout(BoxLayout):
 		# need to get a person in each position
 		
 		print(machine_list)
-		
-			
-				
-			
 
 	def position_people(self):
 		
@@ -100,6 +122,17 @@ class MmpModule(BoxLayout):
 		self.machine_name = 'I-34'
 		self.model_name = 'CSEG'
 
+
+# # # # # # # # # # # # # # # # # # # # 
+
+# Add Teammates Screen
+
+# # # # # # # # # # # # # # # # # # # # 
+		
+class AddTeammatesScreen(Screen):
+
+	pass
+
 class IsSheTrained(BoxLayout):
 
 	pass
@@ -108,6 +141,7 @@ class AddTeammatesLayout(BoxLayout):
 	
 	def __init__(self, **kwargs):
 
+		global teammate_name
 		super(AddTeammatesLayout, self).__init__(**kwargs)
 		
 		global lsm		
@@ -125,7 +159,7 @@ class AddTeammatesLayout(BoxLayout):
 			
 	def record_that_shit(self):
 	
-		global teammate_name
+		
 		teammate_name = self.ids.teammate_name.text
 		print('\n\nThe TextInput result: ' + teammate_name + '\n\n^ ^ : Trying to get the result of whether the TI*s text is registering\n\n')
 		
@@ -137,16 +171,21 @@ class AddTeammatesLayout(BoxLayout):
 				
 				#Add an entry to teammate_modelID_positionnum
 				
-				libs.apa_database.insert_data(tb='teammate_modelID_positionnum', col1='teammate', data1=teammate_name, col2='modelID', data2=position_chart[each][0][0], col3='positionNum', data3=position_chart[each][0][1], col4='available', 	data4='Yes', col5='restricted', data5='No')
+				libs.apa_database.insert_data(tb='teammate_modelID_positionnum', col1='teammate', \
+				data1=teammate_name, col2='modelID', data2=position_chart[each][0][0], \
+				col3='positionNum', data3=position_chart[each][0][1], col4='available', \
+				data4='Yes', col5='restricted', data5='No')
 				
 				# Do db shit
-		App.get_running_app().root.current = 'Victory'
-		
-		#for i in range(0, len(position_chart)):
-		
-class AddTeammatesScreen(Screen):
 
-	pass
+		App.get_running_app().root.current = 'Victory'
+
+
+# # # # # # # # # # # # # # # # # # # # 
+
+# Added Teammates Successfully Screen
+
+# # # # # # # # # # # # # # # # # # # # 
 
 class AddedTeammatesSuccessfullyScreen(Screen):
 
@@ -156,12 +195,54 @@ class AddedTeammatesSuccessfullyLayout(BoxLayout):
 
 	def __init__(self, **kwargs):
 
+		#print('\n\ntriggertool result: ' + triggertool + '\n\n^ ^ : Trying to get triggertool to go off\n\n')
+		self.victory_text = ''
 		
 		super(AddedTeammatesSuccessfullyLayout, self).__init__(**kwargs)
-		self.victory_text = "You've added someone to the team!"#.format(teammate_name)
 		
-	def do_this_fuction_after_entering_teammates(self):
-		print('Hello! I came!')
+		self.victory_text = "You've added someone to your team!"
+
+	def trigger_text(self):
+		self.victory_text = "You've added {} to your team!".format(teammate_name)
+		
+# # # # # # # # # # # # # # # # # # # # 
+
+# Add Machine Screen
+
+# # # # # # # # # # # # # # # # # # # # 
+
+
+
+# # # # # # # # # # # # # # # # # # # # 
+
+# Added Machine Successfully Screen
+
+# # # # # # # # # # # # # # # # # # # # 
+		
+
+
+		
+# # # # # # # # # # # # # # # # # # # # 
+
+# Add Machine Screen
+
+# # # # # # # # # # # # # # # # # # # # 
+
+
+
+# # # # # # # # # # # # # # # # # # # # 
+
+# Added Machine Successfully Screen
+
+# # # # # # # # # # # # # # # # # # # # 
+		
+		
+		
+# # # # # # # # # # # # # # # # # # # # 
+
+# "Boilerplate" (?)
+
+# # # # # # # # # # # # # # # # # # # # 
 	
 class AutopositionerApp(App):
 	def build(self):

@@ -1,3 +1,12 @@
+Able to update database from Kivy app. 
+
+
+
+
+
+
+
+
 For each challenge, cycle through this:
 
 <Challenge> # Specific from the KL
@@ -11,7 +20,7 @@ For each challenge, cycle through this:
 	
 	
 # Haha I like to write in Kivy Lang a lot 	
-	
+	 
 <Modulization>
 	Description: 'how to differentiate the different instances of MmpModule (i.e. how can I* index them, and reference each instantiation specifically--calling on them proceduarly... using data from the database/function to populate the values of the properties?)'
 	
