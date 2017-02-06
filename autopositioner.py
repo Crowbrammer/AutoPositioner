@@ -201,9 +201,17 @@ class AddedTeammatesSuccessfullyLayout(BoxLayout):
 		super(AddedTeammatesSuccessfullyLayout, self).__init__(**kwargs)
 		
 		self.victory_text = "You've added someone to your team!"
+		
+	#### #### #### #### #### #### #### #### #### #### #### #### #### #### #### ####
+	#### #### #### #### #### #### #### #### #### #### #### #### #### #### #### ####	
+	
+	# How do I get this to fire after AddTeammatesLayout().record_that_shit() runs?
 
 	def trigger_text(self):
 		self.victory_text = "You've added {} to your team!".format(teammate_name)
+		
+	#### #### #### #### #### #### #### #### #### #### #### #### #### #### #### ####
+	#### #### #### #### #### #### #### #### #### #### #### #### #### #### #### ####
 		
 # # # # # # # # # # # # # # # # # # # # 
 
