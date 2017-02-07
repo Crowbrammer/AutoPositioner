@@ -10,6 +10,8 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import ObjectProperty, StringProperty, Property
 from kivy.uix.screenmanager import ScreenManager, Screen#, FadeTransition
 from kivy.uix.dropdown import DropDown
+from kivy.uix.button import Button
+
 
 # # # # # # # # # # # # # # # # # # # # 
 
@@ -34,57 +36,91 @@ class PositionerScreen(Screen):
 	
 class PositionerLayout(BoxLayout):
 
-	def __init__(self, **kwargs):
+	def __init__(self, **kwargs): # Don't know **kwargs
 	
 		super(PositionerLayout, self).__init__(**kwargs)
-		# for i in all_active_machines:
+		
+		# What I WANT
+		# for active_machine in all_active_machines:
 			# check if the machine's up 
+			# give the user the option to disable it or activate it, which will affect how the program positions people--or whether they position people at that machine
 			# check the model_in_the_machine
-			# check the positions required for the model_in_the_machine
-			# generate a tuple of positions ID's mach_model_pos
-		# for num_machines in machine_list:
+			# give the user the option to change which model is used in the machine, which will affect how the program positions people--or whether they position people at that machine--because it changes the training and restriction requirements for that machine
+			# check the positions required for the model_in_the_machine, for proper display of buttons--and accurate positioning.
+			# people correctly positioned--according to their training and restrictions and availability--at each machine, in a randomized way.
+		# for each_machines in machine_list:
+			# # separated, is because deactivated machines still need to be displayed
 			# self.add_widget(MmpModule())
 			# current_module_machine_name = machine_list[num_machine]
-			# current_module_model_name = dropdown_list_of_models
-			# list_view_thing = ready_to_be_updated
+			# current_module_model_name = current model, with a dropdown_list_of_models bound to it
+			# a of positions to its left-- updated with people to fill the position (list_view_thing = ready_to_be_updated)
 					
-		machine_list = libs.apa_database.get_data('machineID_modelID_status', order_by_column='machineID')
-		global position_chart
+		machine_list = libs.apa_database.get_data('machineID_modelID_status', order_by_column='machineID') 
+		model_list = set([x[0] for x in libs.apa_database.get_data('modelID_positionnum', order_by_column='modelID')]) # set does not contain duplicate values, and I don't think it orders it... don't know how to test that, yet... 
+		#print('model_list is: ' + str(model_list))
+		
+		global position_chart # so that this variable is available for other functions (Because I don't know how to return data from this and give it to other classes, methods in other classes, because I don't know where Kivy stores implicit instances of these classes.)
+		
 		position_chart = libs.apa_database.assign_people_to_positions()
 		
+		# Not sure if it generates based on the machine list, or models currently used (i.e. not sure if it'll handle duplicates.)
+		
+		dropdown = []
 		mmpm = []
 		
-		for i in range(0, len(machine_list)):
+		for each_machine in range(0, len(machine_list)):
+			
+			dropdown.append(DropDown()) # Because if I use a single DropDown instance, it'll either change every model_button, or only change one. 
+			
+			print('Dropdown ID: ' + str(id(dropdown[each_machine])))
+			
+			for model in model_list:
+
+				btn = Button(text='{}'.format(model), size_hint_y=None, height=44)
+				
+				btn.bind(on_release=lambda btn: dropdown[each_machine].select(btn.text))
+
+				dropdown[each_machine].add_widget(btn)
 		
 			mmpm.append(MmpModule())
-			mmpm[i].ids.machine_button.text = 'Wow: {}'.format(machine_list[i][0])
-			mmpm[i].ids.model_button.text = 'Wow: {}'.format(machine_list[i][1])
+			mmpm[each_machine].ids.machine_button.text = 'Wow: {}'.format(machine_list[each_machine][0])
+			mmpm[each_machine].ids.model_button.text = 'Wow: {}'.format(machine_list[each_machine][1])
+			mmpm[each_machine].ids.model_button.bind(on_release=dropdown[each_machine].open)	
+			
+			
+			# # # # # # # # # # # # # # # # # # # # 
+
+			# Add Teammates Screen
+
+			# # # # # # # # # # # # # # # # # # # # 
+			
+			dropdown[each_machine].bind(on_select=lambda instance, x: setattr(mmpm[each_machine].ids.model_button, 'text', x)) # lambda - get through Unit 1
 			
 			# Needs to pick each item apart and analyze it for its model name. 
 			# Should move onto the item immediately if the item doesn't have the model
 			
 			for each in position_chart:
 				
-				if each[0][0] == machine_list[i][1]:
+				if each[0][0] == machine_list[each_machine][1]:
 				
 					if each[0][1] == 3:
 					
-						mmpm[i].ids.position3.text = 'Wow: {}'.format(each[1])
+						mmpm[each_machine].ids.position3.text = 'Wow: {}'.format(each[1])
 						
 					elif each[0][1] == 2:
 					
-						mmpm[i].ids.position2.text = 'Wow: {}'.format(each[1])
+						mmpm[each_machine].ids.position2.text = 'Wow: {}'.format(each[1])
 						
 					else:
 					
-						mmpm[i].ids.position1.text = 'Wow: {}'.format(each[1])
+						mmpm[each_machine].ids.position1.text = 'Wow: {}'.format(each[1])
 			
 			#print('\n\nThe LC result: ' + str([x for x in position_chart if (machine_list[i][1]	 in position_chart]) + '\n\n^ ^ : Trying to get the values with only the current model.\n\n')
 			
-			print('\n\nID Keys: ' + str(self.ids.keys()) + '\n\n^ ^ : Trying to get the values of ids.\n\n')
+			#print('\n\nID Keys: ' + str(self.ids.keys()) + '\n\n^ ^ : Trying to get the values of ids.\n\n')
 			
-			mymodel = mmpm[i].ids.machine_button.text
-			self.add_widget(mmpm[i])
+			mymodel = mmpm[each_machine].ids.machine_button.text
+			self.add_widget(mmpm[each_machine])
 		
 		# need to get a person in each position
 		
@@ -122,7 +158,6 @@ class MmpModule(BoxLayout):
 		self.machine_name = 'I-34'
 		self.model_name = 'CSEG'
 
-
 # # # # # # # # # # # # # # # # # # # # 
 
 # Add Teammates Screen
@@ -142,6 +177,7 @@ class AddTeammatesLayout(BoxLayout):
 	def __init__(self, **kwargs):
 
 		global teammate_name
+		teammate_name = ''
 		super(AddTeammatesLayout, self).__init__(**kwargs)
 		
 		global lsm		
@@ -159,7 +195,6 @@ class AddTeammatesLayout(BoxLayout):
 			
 	def record_that_shit(self):
 	
-		
 		teammate_name = self.ids.teammate_name.text
 		print('\n\nThe TextInput result: ' + teammate_name + '\n\n^ ^ : Trying to get the result of whether the TI*s text is registering\n\n')
 		
@@ -194,13 +229,14 @@ class AddedTeammatesSuccessfullyScreen(Screen):
 class AddedTeammatesSuccessfullyLayout(BoxLayout):
 
 	def __init__(self, **kwargs):
+	
+		print('Teammate text = ' + teammate_name)
 
 		#print('\n\ntriggertool result: ' + triggertool + '\n\n^ ^ : Trying to get triggertool to go off\n\n')
-		self.victory_text = ''
 		
 		super(AddedTeammatesSuccessfullyLayout, self).__init__(**kwargs)
 		
-		self.victory_text = "You've added someone to your team!"
+		self.victory_text = "You've added {} to your team!".format(teammate_name)
 		
 	#### #### #### #### #### #### #### #### #### #### #### #### #### #### #### ####
 	#### #### #### #### #### #### #### #### #### #### #### #### #### #### #### ####	
@@ -245,7 +281,6 @@ class AddedTeammatesSuccessfullyLayout(BoxLayout):
 # # # # # # # # # # # # # # # # # # # # 
 		
 		
-		
 # # # # # # # # # # # # # # # # # # # # 
 
 # "Boilerplate" (?)
@@ -255,7 +290,6 @@ class AddedTeammatesSuccessfullyLayout(BoxLayout):
 class AutopositionerApp(App):
 	def build(self):
 		ScreenManagement()
-		
 		
 if __name__ == '__main__':
 	AutopositionerApp().run()

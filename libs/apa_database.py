@@ -190,7 +190,7 @@ def list_positions():
 	
 	close_connection()
 	
-	print("The positions are: " + str(positions))
+	#print("The positions are: " + str(positions))
 	
 	# Positions done!
 	
