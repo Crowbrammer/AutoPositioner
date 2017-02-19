@@ -24,6 +24,7 @@ class ScreenManagement(ScreenManager):
 	pass
 	
 	
+	
 # # # # # # # # # # # # # # # # # # # # 
 
 # Positioner Screen
@@ -65,7 +66,7 @@ class PositionerLayout(BoxLayout):
 		
 		# Not sure if it generates based on the machine list, or models currently used (i.e. not sure if it'll handle duplicates.)
 		
-		dropdown = []
+		dropdown = [DropDown()]
 		mmpm = []
 		
 		for each_machine in range(0, len(machine_list)):
@@ -78,7 +79,7 @@ class PositionerLayout(BoxLayout):
 
 				btn = Button(text='{}'.format(model), size_hint_y=None, height=44)
 				
-				btn.bind(on_release=lambda btn: dropdown[each_machine].select(btn.text))
+				btn.bind(on_release=lambda btn, dropdown=dropdown[each_machine]: dropdown.select(btn.text))
 
 				dropdown[each_machine].add_widget(btn)
 		
@@ -90,11 +91,12 @@ class PositionerLayout(BoxLayout):
 			
 			# # # # # # # # # # # # # # # # # # # # 
 
-			# Add Teammates Screen
+			# WHY
 
 			# # # # # # # # # # # # # # # # # # # # 
 			
-			dropdown[each_machine].bind(on_select=lambda instance, x: setattr(mmpm[each_machine].ids.model_button, 'text', x)) # lambda - get through Unit 1
+			
+			dropdown[each_machine].bind(on_select=lambda instance, x, mmpm=mmpm[each_machine]: setattr(mmpm.ids.model_button, 'text', x)) # lambda - get through Unit 1
 			
 			# Needs to pick each item apart and analyze it for its model name. 
 			# Should move onto the item immediately if the item doesn't have the model
@@ -148,6 +150,10 @@ class PositionerLayout(BoxLayout):
 		pass
 		# For each position, get the # of rows where people are trained in this position
 		
+	#def function_that_should_be_unnecessary(self):
+	
+		#self.text = 
+		
 class MmpModule(BoxLayout):
 
 	machine_name = StringProperty()
@@ -158,6 +164,7 @@ class MmpModule(BoxLayout):
 		self.machine_name = 'I-34'
 		self.model_name = 'CSEG'
 
+		
 # # # # # # # # # # # # # # # # # # # # 
 
 # Add Teammates Screen
@@ -216,11 +223,52 @@ class AddTeammatesLayout(BoxLayout):
 		App.get_running_app().root.current = 'Victory'
 
 
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 # # # # # # # # # # # # # # # # # # # # 
 
 # Added Teammates Successfully Screen
 
 # # # # # # # # # # # # # # # # # # # # 
+
 
 class AddedTeammatesSuccessfullyScreen(Screen):
 
@@ -248,6 +296,24 @@ class AddedTeammatesSuccessfullyLayout(BoxLayout):
 		
 	#### #### #### #### #### #### #### #### #### #### #### #### #### #### #### ####
 	#### #### #### #### #### #### #### #### #### #### #### #### #### #### #### ####
+	
+	
+# # # # # # # # # # # # # # # # # # # # 
+
+# Add Model Screen
+
+# # # # # # # # # # # # # # # # # # # # 
+
+# If a machine is tapped, have the option to select what model is there
+
+# Have an entirely new screen for managing models 
+
+# # # # # # # # # # # # # # # # # # # # 
+
+# Added Machine Successfully Screen
+
+# # # # # # # # # # # # # # # # # # # # 
+		
 		
 # # # # # # # # # # # # # # # # # # # # 
 
