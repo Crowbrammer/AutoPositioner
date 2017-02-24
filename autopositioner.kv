@@ -13,151 +13,195 @@ ScreenManagement:
 	PositionerScreen:
 	AddTeammatesScreen:
 	AddedTeammatesSuccessfullyScreen:
-	
-# # # # # # # # # # # # # # # # # # # # 
+	UnusedMachineScreen:
+
+# # # # # # # # # # # # # # # # # # # #
 
 # Positioner Screen
 
-# # # # # # # # # # # # # # # # # # # # 	
+# # # # # # # # # # # # # # # # # # # #
 
 <PositionerScreen>:
-	
+
 	name: 'PositionerScreen'
-	
+
 	PositionerLayout
 
 <PositionerLayout>:
 
 	orientation: 'vertical'
-	
-	Button: 
-		
+
+	Button:
+
 		on_release: app.root.current = 'AddTeammatesScreen'
 		text: 'Add Teammates!'
 		font_size: '30dp'
-	
+
+	Button:
+
+		on_release: app.root.current = 'UnusedMachineScreen'
+		text: 'See Unused Machines!'
+		font_size: '15dp'
+
 	Image:
-	
+
 		source: 'data/cat.jpg'
-	
+
 <MmpModule>:
 
 	size_hint: 1,1
 	orientation: 'vertical'
 	id: mmpm1
-	
+
 	BoxLayout: # This should probably be in Root
-	
+
 		id: bl_super
-	
+
 		height: '90dp'
 		size_hint_y: None
 		padding: 10, 10
-		
+
 		BoxLayout:
-			
+
 			orientation: 'vertical'
-			Button: 
-			
+			Button:
+
 				id: position1
-				
+
 			Button:
-			
+
 				id: position2
-			
+
 			Button:
-			
+
 				id: position3
-			
+
 		BoxLayout:
-		
+
 			id: bl2
-		
+
 			orientation: 'vertical'
-			
+
 			Button:
-			
+
 				id: machine_button
-				
+
 			Button:
-			
+
 				id: model_button
-				
-			
-			
-	
-# # # # # # # # # # # # # # # # # # # # 
+
+
+
+
+# # # # # # # # # # # # # # # # # # # #
 
 # Add Teammates Screen
 
-# # # # # # # # # # # # # # # # # # # # 
+# # # # # # # # # # # # # # # # # # # #
 
-		
+
 <AddTeammatesScreen>:
 
 	name: 'AddTeammatesScreen'
-	
+
 	AddTeammatesLayout
 
 <AddTeammatesLayout>:
-	
+
 	orientation: 'vertical'
-	
+
 	padding: 20
 
 	TextInput:
-		
+
 		id: teammate_name
-		
-		
-	Button: 
-		
+
+
+	Button:
+
 		on_release: app.root.current = 'PositionerScreen'
 		text: 'Position Em!'
 		font_size: '30dp'
-		
-	Button: 
-		
+
+	Button:
+
 		on_release: root.record_that_shit()
 		text: 'Record That Shit!'
 		font_size: '30dp'
-	
+
+	Button:
+
+		on_release: app.root.current = 'PositionerScreen'
+		text: 'Position Em!'
+		font_size: '30dp'
+
 	Image:
-	
+
 		source: 'data/cat.jpg'
-	
-<IsSheTrained>:	
-	
+
+<IsSheTrained>:
+
 	Label:
-	
+
 		id: position_label
 		text: '[Position Name]'
-		
-	Switch: 
-	
+
+	Switch:
+
 		id: position_training_switch
-		
-# # # # # # # # # # # # # # # # # # # # 
+
+# # # # # # # # # # # # # # # # # # # #
 
 # Added Teammates Successfully Screen
 
-# # # # # # # # # # # # # # # # # # # # 		
-		
+# # # # # # # # # # # # # # # # # # # #
+
 <AddedTeammatesSuccessfullyScreen>:
-	
+
 	name: 'Victory'
 
 	AddedTeammatesSuccessfullyLayout
 
 <AddedTeammatesSuccessfullyLayout>:
-	
+
 	id: added_teammate
 
 	Label:
 		id: display_label
 		text: root.victory_text
-		
+
 	Button:
 		on_release: app.root.current = 'PositionerScreen'
 		text: 'Position Em!'
 		font_size: '30dp'
+
+# # # # # # # # # # # # # # # # # # #
+
+# Unused Machines Screen
+# # # # # # # # # # # # # # # # # # # #
+
+<UnusedMachineScreen>:
+
+	name: 'UnusedMachineScreen'
+	UnusedMachineLayout
+
+<UnusedMachineLayout>:
+
+	# B2-A
+	orientation: 'vertical'
+	padding: 20, 20
+
+# (B)
+<ItemLayout>:
+
+	# B2-A
+	padding: 20, 20
+	# size_hint_y: None
+	# height:'40dp'
+
+	Button:
+		id: machine_status
+
+	Button:
+		id: machine_id
+		text: ''
