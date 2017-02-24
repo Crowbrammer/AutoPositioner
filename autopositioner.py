@@ -7,10 +7,11 @@ import libs.apa_database
 import inspect
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
-from kivy.properties import ObjectProperty, StringProperty, Property
 from kivy.uix.screenmanager import ScreenManager, Screen#, FadeTransition
 from kivy.uix.dropdown import DropDown
 from kivy.uix.button import Button
+from kivy.uix.scrollview import ScrollView
+from kivy.clock import Clock
 
 
 # # # # # # # # # # # # # # # # # # # #
@@ -22,8 +23,6 @@ from kivy.uix.button import Button
 class ScreenManagement(ScreenManager):
 
 	pass
-
-
 
 # # # # # # # # # # # # # # # # # # # #
 
@@ -72,8 +71,6 @@ class PositionerLayout(BoxLayout):
 		for each_machine in range(0, len(machine_list)):
 
 			dropdown.append(DropDown()) # Because if I use a single DropDown instance, it'll either change every model_button, or only change one.
-
-			print('Dropdown ID: ' + str(id(dropdown[each_machine])))
 
 			for model in model_list:
 
@@ -124,10 +121,6 @@ class PositionerLayout(BoxLayout):
 			mymodel = mmpm[each_machine].ids.machine_button.text
 			self.add_widget(mmpm[each_machine])
 
-		# need to get a person in each position
-
-		print(machine_list)
-
 	def position_people(self):
 
 		# Get a list of all the available people
@@ -156,13 +149,7 @@ class PositionerLayout(BoxLayout):
 
 class MmpModule(BoxLayout):
 
-	machine_name = StringProperty()
-
-	def __init__(self, **kwargs):
-
-		super(MmpModule, self).__init__(**kwargs)
-		self.machine_name = 'I-34'
-		self.model_name = 'CSEG'
+	pass
 
 
 # # # # # # # # # # # # # # # # # # # #
@@ -189,7 +176,6 @@ class AddTeammatesLayout(BoxLayout):
 
 		global lsm
 		lsm = [] # Label-Switch Module
-		print(str(position_chart))
 		for i in range(0, len(position_chart)):
 
 			lsm.append(IsSheTrained())
@@ -203,7 +189,6 @@ class AddTeammatesLayout(BoxLayout):
 	def record_that_shit(self):
 
 		teammate_name = self.ids.teammate_name.text
-		print('\n\nThe TextInput result: ' + teammate_name + '\n\n^ ^ : Trying to get the result of whether the TI*s text is registering\n\n')
 
 		for each in range(0, len(lsm)):
 
@@ -222,14 +207,70 @@ class AddTeammatesLayout(BoxLayout):
 
 		App.get_running_app().root.current = 'Victory'
 
+# # # # # # # # # # # # # # # # # # # #
+
+# Model Add Screen
+
+# # # # # # # # # # # # # # # # # # # #
+
+class ModelAddScreen(Screen):
+	pass
+
+class ModelAddLayout(BoxLayout):
+
+	def __init__(self, **kwargs):
+		super(ModelAddLayout, self).__init__(**kwargs)
+		Clock.schedule_once(self.late_init, 0)
+
+	def late_init(self, key, **largs):
+		# print(dir(self.ids.num_positions))
+		test = self.ids.model_add_name.text
+		# print('test: ',str(test))
+		# create a dropdown with 10 buttons
+		dropdown = DropDown()
+		for index in range(1,11):
+			# When adding widgets, we need to specify the height manually
+			# (disabling the size_hint_y) so the dropdown can calculate
+			# the area it needs.
+
+			btn = Button(text='%d' % index, size_hint_y=None, height=44)
+
+			# for each button, attach a callback that will call the select() method
+			# on the dropdown. We'll pass the text of the button as the data of the
+			# selection.
+			btn.bind(on_release=lambda btn: dropdown.select(btn.text))
+
+			# then add the button inside the dropdown
+			dropdown.add_widget(btn)
+
+		self.ids.num_positions.bind(on_release=dropdown.open)
+		dropdown.bind(on_select=lambda instance, x, e=self.ids.num_positions: setattr(e, 'text', x))
 
 
 
+	def record_new_model(self):
+		model_name = self.ids.model_add_name.text
+		try:
+			num_positions = int(self.ids.num_positions.text)
+		except ValueError:
+			self.ids.num_positions.text = 'Please select # of positions for model:'
+			return
 
+		for i in range(1, num_positions + 1):
+			libs.apa_database.insert_data(tb='modelID_positionnum', col1='modelID', \
+			 		data1=model_name, col2='positionNum', data2=i)
 
+class PrimaryOverlay(ScrollView):
+	pass
 
+# # # # # # # # # # # # # # # # # # # #
 
+# NavigationHUD
 
+# # # # # # # # # # # # # # # # # # # #
+
+class NavigationHUD(BoxLayout):
+	pass
 
 
 
@@ -278,8 +319,6 @@ class AddedTeammatesSuccessfullyLayout(BoxLayout):
 
 	def __init__(self, **kwargs):
 
-		print('Teammate text = ' + teammate_name)
-
 		#print('\n\ntriggertool result: ' + triggertool + '\n\n^ ^ : Trying to get triggertool to go off\n\n')
 
 		super(AddedTeammatesSuccessfullyLayout, self).__init__(**kwargs)
@@ -321,8 +360,6 @@ class UnusedMachineLayout(BoxLayout):
 
 		# (B)
 		for each_machine in range(len(machine_list)):
-
-			print('iteration #: ' + str(each_machine))
 			dd_s.append(DropDown())
 
 			# D/2
@@ -337,8 +374,6 @@ class UnusedMachineLayout(BoxLayout):
 			easy_layouts.append(ItemLayout())
 
 			if machine_list[each_machine][2] == 'Down':
-
-				print('easy_layouts: ', str(easy_layouts))
 
 				easy_layouts[each_machine].ids.machine_id.text = machine_list[each_machine][0]
 				# D
@@ -358,10 +393,7 @@ class UnusedMachineLayout(BoxLayout):
 		'''
 		machineID = machine_id.ids.machine_id.text
 
-		print('machine_id: ', machineID)
-		print('machine_status: ', machine_status)
 		libs.apa_database.update_machine_status(machineID, machine_status)
-		print('update_machine_status(machineID, machine_status) should be called...')
 
 class ItemLayout(BoxLayout):
 	pass

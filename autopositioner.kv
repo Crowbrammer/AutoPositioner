@@ -14,6 +14,7 @@ ScreenManagement:
 	AddTeammatesScreen:
 	AddedTeammatesSuccessfullyScreen:
 	UnusedMachineScreen:
+	ModelAddScreen:
 
 # # # # # # # # # # # # # # # # # # # #
 
@@ -29,23 +30,34 @@ ScreenManagement:
 
 <PositionerLayout>:
 
+	padding: 20, 20
 	orientation: 'vertical'
 
-	Button:
+	BoxLayout:
 
-		on_release: app.root.current = 'AddTeammatesScreen'
-		text: 'Add Teammates!'
-		font_size: '30dp'
+		Button:
 
-	Button:
+			on_release: app.root.current = 'AddTeammatesScreen'
+			text: 'Add Teammates!'
+			font_size: '15dp'
 
-		on_release: app.root.current = 'UnusedMachineScreen'
-		text: 'See Unused Machines!'
-		font_size: '15dp'
+		Button:
+
+			on_release: app.root.current = 'UnusedMachineScreen'
+			text: 'See Unused Machines!'
+			font_size: '15dp'
+
+		Button:
+
+			on_release: app.root.current = 'ModelAddScreen'
+			text: 'Add Models!'
+			font_size: '15dp'
 
 	Image:
 
 		source: 'data/cat.jpg'
+
+	NavigationHUD
 
 <MmpModule>:
 
@@ -139,6 +151,8 @@ ScreenManagement:
 
 		source: 'data/cat.jpg'
 
+	NavigationHUD
+
 <IsSheTrained>:
 
 	Label:
@@ -178,6 +192,7 @@ ScreenManagement:
 # # # # # # # # # # # # # # # # # # #
 
 # Unused Machines Screen
+
 # # # # # # # # # # # # # # # # # # # #
 
 <UnusedMachineScreen>:
@@ -190,6 +205,7 @@ ScreenManagement:
 	# B2-A
 	orientation: 'vertical'
 	padding: 20, 20
+	NavigationHUD
 
 # (B)
 <ItemLayout>:
@@ -205,3 +221,67 @@ ScreenManagement:
 	Button:
 		id: machine_id
 		text: ''
+
+# # # # # # # # # # # # # # # # # # #
+
+# Model Add Screen
+
+# # # # # # # # # # # # # # # # # # # #
+
+<ModelAddScreen>:
+
+	name: 'ModelAddScreen'
+	PrimaryOverlay
+
+<PrimaryOverlay>:
+
+	ModelAddLayout
+
+<ModelAddLayout>:
+
+	orientation: 'vertical'
+	spacing: 20
+
+	BoxLayout:
+
+		orientation: 'vertical'
+		padding: 20, 20
+		spacing: 10
+
+		Label:
+			id: title_label
+			text: 'Model Add Screen'
+			font_size: '30dp'
+			# text_size: '15dp'
+
+		TextInput:
+			id: model_add_name
+			text: 'Add your model name here'
+			multiline: False
+
+		Button:
+			id: num_positions
+			text: '# of positions'
+
+		Button:
+			id: add_model_confirm
+			text: 'Add Model'
+			font_size: '30dp'
+			on_release: root.record_new_model()
+
+		NavigationHUD
+
+##
+
+<NavigationHUD>
+
+	size_hint_y: None
+	height: '40dp'
+	Button:
+		id: feedback_button
+		text: 'Spch Bubble'
+
+	Button:
+		id: home_button
+		text: 'Home'
+		on_release: app.root.current = 'PositionerScreen'
