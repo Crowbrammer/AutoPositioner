@@ -7,6 +7,7 @@ import libs.apa_database
 import inspect
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.gridlayout import GridLayout
 from kivy.uix.screenmanager import ScreenManager, Screen#, FadeTransition
 from kivy.uix.dropdown import DropDown
 from kivy.uix.button import Button
@@ -68,7 +69,25 @@ class PositionerLayout(BoxLayout):
 		dropdown = [DropDown()]
 		mmpm = []
 
-		for each_machine in range(0, len(machine_list)):
+		'''
+		Get the list of machines into a SV:
+
+		Put everything that would've gone into a BoxLayout into a GridLayout
+		Set the size_hint_y to None, and make its minimum height into actual height(?)
+		Put that GridLayout into a SV
+		Set the height of SV (Optional)
+		Put the SV into the current layout
+		'''
+
+
+
+
+		# Put everything that would've gone into a BoxLayout into a GridLayout (P1/2)
+		# Set the size_hint_y to None, and make its minimum height into actual height(?)
+		hold_mmpms = GridLayout(cols=1, size_hint_y=None, height=700)
+		hold_mmpms.bind(minimum_height = hold_mmpms.setter('height'))
+
+		for each_machine in range(len(machine_list)):
 
 			dropdown.append(DropDown()) # Because if I use a single DropDown instance, it'll either change every model_button, or only change one.
 
@@ -119,7 +138,18 @@ class PositionerLayout(BoxLayout):
 			#print('\n\nID Keys: ' + str(self.ids.keys()) + '\n\n^ ^ : Trying to get the values of ids.\n\n')
 
 			mymodel = mmpm[each_machine].ids.machine_button.text
-			self.add_widget(mmpm[each_machine])
+
+			# Put everything that would've gone into a BoxLayout into a GridLayout (P1/2)
+			hold_mmpms.add_widget(mmpm[each_machine])
+
+		# Put that GridLayout into a SV
+		scroll_mmpms = ScrollView(size_hint_y=10)
+		scroll_mmpms.add_widget(hold_mmpms)
+
+		# Put the SV into the current layout
+		self.add_widget(scroll_mmpms)
+
+
 
 	def position_people(self):
 
@@ -170,25 +200,30 @@ class AddTeammatesLayout(BoxLayout):
 
 	def __init__(self, **kwargs):
 
+		super(AddTeammatesLayout, self).__init__(**kwargs)
+
 		global teammate_name
 		teammate_name = ''
-		super(AddTeammatesLayout, self).__init__(**kwargs)
+
+		positions = libs.apa_database.get_data(table_name='modelID_positionnum')
 
 		global lsm
 		lsm = [] # Label-Switch Module
-		for i in range(0, len(position_chart)):
+		for i in range(0, len(positions)):
 
 			lsm.append(IsSheTrained())
-			lsm[i].ids.position_label.text = 'Wow: {}'.format(position_chart[i][0][0])
+			lsm[i].ids.position_label.text = '{}-{}'.format(positions[i][0], positions[i][1])
 			self.add_widget(lsm[i])
-
-
 			# Needs to pick each item apart and analyze it for its model name.
 			# Should move onto the item immediately if the item doesn't have the model
 
 	def record_that_shit(self):
 
 		teammate_name = self.ids.teammate_name.text
+		libs.apa_database.insert_data(tb='teammate_modelID_positionnum', col1='teammate', \
+		data1=teammate_name, col2='modelID', data2=None, \
+		col3='positionNum', data3=None, col4='available', \
+		data4=None, col5='restricted', data5=None)
 
 		for each in range(0, len(lsm)):
 
@@ -397,19 +432,6 @@ class UnusedMachineLayout(BoxLayout):
 
 class ItemLayout(BoxLayout):
 	pass
-# # # # # # # # # # # # # # # # # # # #
-
-# Add Model Screen
-
-# # # # # # # # # # # # # # # # # # # #
-
-
-
-# # # # # # # # # # # # # # # # # # # #
-
-# Add Model Screen
-
-# # # # # # # # # # # # # # # # # # # #
 
 # If a machine is tapped, have the option to select what model is there
 
@@ -428,7 +450,43 @@ class ItemLayout(BoxLayout):
 
 # # # # # # # # # # # # # # # # # # # #
 
+class MachineAddScreen(Screen):
+	pass
 
+class MachineAddLayout(BoxLayout):
+
+	def __init__(self, **kwargs):
+		super(MachineAddLayout, self).__init__(**kwargs)
+		Clock.schedule_once(self.late_init, 0)
+
+	def late_init(self, key, **largs):
+		# print(dir(self.ids.num_positions))
+		test = self.ids.machine_add_name.text
+		# print('test: ',str(test))
+		# create a dropdown with 10 buttons
+		dropdown = DropDown()
+		btn = Button(text='Up', size_hint_y=None, height=44)
+		btn.bind(on_release=lambda btn, d=dropdown: d.select(btn.text))
+		dropdown.add_widget(btn)
+
+		btn = Button(text='Down', size_hint_y=None, height=44)
+		btn.bind(on_release=lambda btn, d=dropdown: d.select(btn.text))
+		dropdown.add_widget(btn)
+			# then add the button inside the dropdown
+
+		self.ids.status.bind(on_release=dropdown.open)
+		dropdown.bind(on_select=lambda instance, x, e=self.ids.status: setattr(e, 'text', x))
+
+
+
+	def record_new_model(self):
+		machine_name = self.ids.machine_add_name.text
+		status = self.ids.status.text
+		print(machine_name)
+
+		libs.apa_database.insert_data(tb='machineID_modelID_status', col1='machineID', \
+			 		data1=machine_name, col2='modelID', data2=None, \
+					col3='machine_status', data3=status)
 
 # # # # # # # # # # # # # # # # # # # #
 
