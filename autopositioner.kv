@@ -15,6 +15,7 @@ ScreenManagement:
 	AddedTeammatesSuccessfullyScreen:
 	UnusedMachineScreen:
 	ModelAddScreen:
+	MachineAddScreen:
 
 # # # # # # # # # # # # # # # # # # # #
 
@@ -53,6 +54,15 @@ ScreenManagement:
 			text: 'Add Models!'
 			font_size: '15dp'
 
+		Button:
+
+			on_release: app.root.current = 'MachineAddScreen'
+			text: 'Add Machines!'
+			font_size: '15dp'
+
+	Button:
+
+		text: "Position 'Em!"
 	Image:
 
 		source: 'data/cat.jpg'
@@ -270,6 +280,52 @@ ScreenManagement:
 			on_release: root.record_new_model()
 
 		NavigationHUD
+
+# # # # # # # # # # # # # # # # # # # #
+
+# Machine Add Screen
+
+# # # # # # # # # # # # # # # # # # # #
+
+<MachineAddScreen>:
+
+	name: 'MachineAddScreen'
+	MachineAddLayout
+
+<MachineAddLayout>:
+
+	orientation: 'vertical'
+	spacing: 20
+
+	BoxLayout:
+
+		orientation: 'vertical'
+		padding: 20, 20
+		spacing: 10
+
+		Label:
+			id: title_label
+			text: 'Machine Add Screen'
+			font_size: '30dp'
+			# text_size: '15dp'
+
+		TextInput:
+			id: machine_add_name
+			text: 'Add your machine name here'
+			multiline: False
+
+		Button:
+			id: status
+			text: 'Machine Status'
+
+		Button:
+			id: add_machine_confirm
+			text: 'Add Model'
+			font_size: '30dp'
+			on_release: root.record_new_model()
+
+	NavigationHUD
+
 
 ##
 
